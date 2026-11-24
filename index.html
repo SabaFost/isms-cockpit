@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISMS Cockpit | D-Cyber Compliance</title>
+<meta name="description" content="ISMS Cockpit von D-Cyber Compliance: ISO/IEC 27001:2022, Statement of Applicability, Dokumentenlenkung, Risiken, Nachweise und Zertifizierungsaudits.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1D2F54; --navy-d:#14264A; --blue:#006EB7; --sky:#85B7EB; --sky-t:rgba(133,183,235,.16);
+  --bg:#F3F6F8; --bg-b:#EAF3FB; --line:#D9E1EA; --muted:#55636F; --muted-l:#A9B6C6; --ink:#1D2F54;
+  --ok:#1E8A5A; --warn:#C77700; --bad:#B42335; --white:#fff;
+  --r:10px; --shadow:0 1px 2px rgba(20,38,74,.06),0 4px 16px rgba(20,38,74,.06);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Ubuntu,Arial,sans-serif;font-size:14px;color:var(--ink);background:var(--bg);line-height:1.45}
+a{color:var(--blue)}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+/* Sidebar */
+.side{background:linear-gradient(180deg,var(--navy) 0%,var(--navy-d) 100%);color:#fff;padding:20px 14px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 14px;border-bottom:1px solid rgba(255,255,255,.1)}
+.brand svg{flex:none}
+.brand b{font-weight:500;font-size:16px;letter-spacing:.2px}
+.brand small{display:block;color:var(--sky);font-size:11px;letter-spacing:.6px;text-transform:uppercase;margin-top:2px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav a{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;color:#DCE6F2;text-decoration:none;font-size:14px}
+.nav a:hover{background:rgba(255,255,255,.06)}
+.nav a.on{background:var(--sky-t);color:#fff;box-shadow:inset 3px 0 0 var(--sky)}
+.nav .ic{width:18px;text-align:center;opacity:.9}
+.side .foot{margin-top:auto;font-size:11px;color:var(--muted-l);padding:0 8px}
+/* Main */
+.main{min-width:0;display:flex;flex-direction:column}
+.top{display:flex;align-items:center;gap:12px;padding:14px 28px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5;flex-wrap:wrap}
+.top h1{font-size:18px;margin:0 auto 0 0;font-weight:700}
+.tenant{display:flex;align-items:center;gap:8px}
+.tenant select{min-width:220px}
+.content{padding:24px 28px 48px;display:flex;flex-direction:column;gap:20px}
+.banner{background:var(--bg-b);border:1px solid #CFE2F5;color:var(--navy);padding:10px 14px;border-radius:var(--r);font-size:13px;display:flex;gap:10px;align-items:flex-start}
+.banner.warn{background:#FFF6E5;border-color:#F3D9A4}
+/* Controls */
+.btn{border:1px solid var(--line);background:#fff;padding:7px 12px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--sky)}
+.btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.pri:hover{background:#005C99}
+.btn.ghost{background:transparent;border-color:rgba(255,255,255,.25);color:#fff}
+.btn.sm{padding:4px 9px;font-size:12px}
+.btn.del{color:var(--bad)}
+input,select,textarea{border:1px solid var(--line);border-radius:8px;padding:7px 10px;background:#fff;width:100%}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--sky);outline-offset:0;border-color:var(--sky)}
+/* Cards */
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px}
+.card h2{font-size:15px;margin:0 0 12px;font-weight:700}
+.card h2 small{font-weight:400;color:var(--muted);margin-left:6px}
+.eyebrow{font-size:11px;letter-spacing:.7px;text-transform:uppercase;color:var(--blue);font-weight:500}
+.kpi .v{font-size:30px;font-weight:700;margin-top:4px}
+.kpi .s{color:var(--muted);font-size:12px}
+.bar{height:8px;background:var(--bg-b);border-radius:99px;overflow:hidden;margin-top:10px}
+.bar>i{display:block;height:100%;background:var(--blue);border-radius:99px}
+.toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.toolbar .grow{flex:1}
+.toolbar input[type=search]{max-width:280px}
+/* Tables */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.tbl th{background:var(--bg);text-align:left;font-weight:500;color:var(--muted);font-size:12px;padding:9px 10px;border-bottom:1px solid var(--line);position:sticky;top:0}
+.tbl td{padding:8px 10px;border-bottom:1px solid #EEF2F6;vertical-align:top}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr.grp td{background:var(--bg-b);font-weight:700;color:var(--navy);font-size:12px;letter-spacing:.3px}
+.tbl td.id{font-weight:500;white-space:nowrap;color:var(--blue)}
+.tbl select{padding:4px 6px;font-size:12px;width:auto}
+.wrap{overflow:auto;max-height:calc(100vh - 230px);border-radius:var(--r)}
+.pill{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:500;white-space:nowrap;background:var(--bg-b);color:var(--navy)}
+.pill.ok{background:#E3F4EC;color:var(--ok)}
+.pill.warn{background:#FFF1DA;color:var(--warn)}
+.pill.bad{background:#FBE5E8;color:var(--bad)}
+.pill.mute{background:#EEF1F4;color:var(--muted)}
+.muted{color:var(--muted)}
+ul.sq{list-style:none;padding:0;margin:0}
+ul.sq li{padding:5px 0 5px 16px;position:relative;border-bottom:1px solid #EEF2F6}
+ul.sq li:last-child{border-bottom:none}
+ul.sq li:before{content:"";position:absolute;left:0;top:12px;width:6px;height:6px;background:var(--blue)}
+/* Heatmap */
+.heat{display:grid;grid-template-columns:24px repeat(5,1fr);gap:4px;font-size:11px}
+.heat div{aspect-ratio:1.6;display:flex;align-items:center;justify-content:center;border-radius:6px;font-weight:700}
+.heat .lab{background:none;color:var(--muted);font-weight:400}
+/* Timeline */
+.tl{display:flex;gap:0;position:relative;margin-top:8px}
+.tl .st{flex:1;text-align:center;position:relative;padding-top:22px;font-size:12px}
+.tl .st:before{content:"";position:absolute;top:8px;left:0;right:0;height:2px;background:var(--line)}
+.tl .st:after{content:"";position:absolute;top:3px;left:50%;margin-left:-6px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--muted-l)}
+.tl .st.done:after{background:var(--ok);border-color:var(--ok)}
+.tl .st.next:after{background:var(--blue);border-color:var(--blue);box-shadow:0 0 0 4px var(--sky-t)}
+.tl .st b{display:block;font-weight:500}
+/* Modal */
+.ov{position:fixed;inset:0;background:rgba(20,38,74,.45);display:flex;align-items:flex-start;justify-content:center;padding:6vh 16px;z-index:50}
+.modal{background:#fff;border-radius:14px;max-width:680px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:88vh;display:flex;flex-direction:column}
+.modal header{padding:16px 20px;border-bottom:1px solid var(--line);font-weight:700;font-size:16px}
+.modal .body{padding:18px 20px;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+.modal .body .full{grid-column:1/-1}
+.modal label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted)}
+.modal footer{padding:12px 20px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:8px}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:10px;box-shadow:var(--shadow);z-index:60;font-size:13px}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+@media (max-width:1100px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}.g2{grid-template-columns:1fr}}
+@media (max-width:820px){.app{grid-template-columns:1fr}.side{position:static;height:auto}.nav{flex-direction:row;flex-wrap:wrap}}
+@media print{.side,.top,.toolbar,.banner,.btn{display:none!important}.app{display:block}.content{padding:0}.wrap{max-height:none;overflow:visible}body{background:#fff;font-size:10pt}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><rect x="3" y="3" width="3.2" height="24" rx="1" fill="#85B7EB"/><path d="M10 3h6.5C23 3 27 8 27 15s-4 12-10.5 12H10v-3.4h6.3c4.4 0 7.2-3.4 7.2-8.6s-2.8-8.6-7.2-8.6H10z" fill="#fff"/></svg>
+      <div><b>Cyber Compliance</b><small>ISMS Cockpit</small></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="foot">ISO/IEC 27001:2022 · ISO/IEC 17021-1<br>© D-Services GmbH · v1.0</div>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <h1 id="title">Dashboard</h1>
+      <div class="tenant"><select id="tenantSel" aria-label="Mandant"></select><button class="btn sm" id="newTenant">+ Mandant</button></div>
+      <button class="btn" id="btnImport">Import</button>
+      <button class="btn pri" id="btnExport">Export (verschlüsselt)</button>
+      <input type="file" id="fileIn" accept=".json,.dcc" hidden>
+    </div>
+    <div class="content" id="view"></div>
+  </main>
+</div>
+<script>
+"use strict";
+/* ======================= Stammdaten ISO/IEC 27001:2022 ======================= */
+const THEMES={"5":"Organisatorische Maßnahmen","6":"Personenbezogene Maßnahmen","7":"Physische Maßnahmen","8":"Technologische Maßnahmen"};
+const CONTROLS=[
+["5.1","Informationssicherheitsrichtlinien"],["5.2","Rollen und Verantwortlichkeiten"],["5.3","Aufgabentrennung"],["5.4","Verantwortung der Leitung"],["5.5","Kontakt mit Behörden"],["5.6","Kontakt mit Interessengruppen"],["5.7","Threat Intelligence"],["5.8","Informationssicherheit im Projektmanagement"],["5.9","Inventar der Informationen und Werte"],["5.10","Zulässiger Gebrauch von Werten"],["5.11","Rückgabe von Werten"],["5.12","Klassifizierung von Informationen"],["5.13","Kennzeichnung von Informationen"],["5.14","Informationsübertragung"],["5.15","Zugangssteuerung"],["5.16","Identitätsmanagement"],["5.17","Authentisierungsinformationen"],["5.18","Zugangsrechte"],["5.19","Informationssicherheit in Lieferantenbeziehungen"],["5.20","Sicherheit in Lieferantenvereinbarungen"],["5.21","Sicherheit in der IKT-Lieferkette"],["5.22","Überwachung und Änderung von Lieferantenleistungen"],["5.23","Informationssicherheit bei Cloud-Diensten"],["5.24","Planung und Vorbereitung des Vorfallmanagements"],["5.25","Bewertung von Sicherheitsereignissen"],["5.26","Reaktion auf Sicherheitsvorfälle"],["5.27","Lernen aus Sicherheitsvorfällen"],["5.28","Sammeln von Beweismaterial"],["5.29","Informationssicherheit bei Störungen"],["5.30","IKT-Bereitschaft für Business Continuity"],["5.31","Rechtliche, regulatorische und vertragliche Anforderungen"],["5.32","Geistige Eigentumsrechte"],["5.33","Schutz von Aufzeichnungen"],["5.34","Datenschutz und Schutz personenbezogener Daten"],["5.35","Unabhängige Überprüfung der Informationssicherheit"],["5.36","Einhaltung von Richtlinien, Regeln und Standards"],["5.37","Dokumentierte Betriebsabläufe"],
+["6.1","Sicherheitsüberprüfung (Screening)"],["6.2","Beschäftigungs- und Vertragsbedingungen"],["6.3","Sensibilisierung, Schulung und Training"],["6.4","Maßregelungsprozess"],["6.5","Pflichten bei Beendigung oder Wechsel"],["6.6","Vertraulichkeitsvereinbarungen"],["6.7","Remote-Arbeit"],["6.8","Meldung von Sicherheitsereignissen"],
+["7.1","Physische Sicherheitsperimeter"],["7.2","Physischer Zutritt"],["7.3","Sicherung von Büros, Räumen und Einrichtungen"],["7.4","Physische Sicherheitsüberwachung"],["7.5","Schutz vor physischen und umweltbedingten Bedrohungen"],["7.6","Arbeiten in Sicherheitsbereichen"],["7.7","Aufgeräumte Arbeitsumgebung und Bildschirmsperre"],["7.8","Platzierung und Schutz von Geräten"],["7.9","Sicherheit von Werten außerhalb der Räumlichkeiten"],["7.10","Speichermedien"],["7.11","Versorgungseinrichtungen"],["7.12","Sicherheit der Verkabelung"],["7.13","Instandhaltung von Geräten"],["7.14","Sichere Entsorgung oder Wiederverwendung von Geräten"],
+["8.1","Endgeräte der Benutzer"],["8.2","Privilegierte Zugangsrechte"],["8.3","Beschränkung des Informationszugangs"],["8.4","Zugriff auf Quellcode"],["8.5","Sichere Authentisierung"],["8.6","Kapazitätsmanagement"],["8.7","Schutz gegen Schadsoftware"],["8.8","Management technischer Schwachstellen"],["8.9","Konfigurationsmanagement"],["8.10","Löschung von Informationen"],["8.11","Datenmaskierung"],["8.12","Verhinderung von Datenlecks"],["8.13","Sicherung von Informationen (Backup)"],["8.14","Redundanz informationsverarbeitender Einrichtungen"],["8.15","Protokollierung"],["8.16","Überwachung von Aktivitäten"],["8.17","Uhrensynchronisation"],["8.18","Gebrauch privilegierter Hilfsprogramme"],["8.19","Installation von Software auf Betriebssystemen"],["8.20","Netzwerksicherheit"],["8.21","Sicherheit von Netzwerkdiensten"],["8.22","Trennung von Netzwerken"],["8.23","Webfilterung"],["8.24","Einsatz von Kryptographie"],["8.25","Sicherer Entwicklungslebenszyklus"],["8.26","Anforderungen an die Anwendungssicherheit"],["8.27","Sichere Systemarchitektur und Entwicklungsgrundsätze"],["8.28","Sichere Programmierung"],["8.29","Sicherheitstests in Entwicklung und Abnahme"],["8.30","Ausgelagerte Entwicklung"],["8.31","Trennung von Entwicklungs-, Test- und Produktionsumgebungen"],["8.32","Änderungssteuerung"],["8.33","Testdaten"],["8.34","Schutz von Informationssystemen während Audits"]
+];
+const CLAUSES=[
+["4.1","Verstehen der Organisation und ihres Kontexts","Kontextanalyse (intern/extern)"],["4.2","Erfordernisse interessierter Parteien","Register interessierter Parteien"],["4.3","Anwendungsbereich des ISMS","Scope-Statement (dokumentiert)"],["4.4","Informationssicherheitsmanagementsystem","Prozesslandkarte, ISMS-Handbuch"],
+["5.1","Führung und Verpflichtung","Nachweise Leitungsbeteiligung"],["5.2","Informationssicherheitspolitik","Leitlinie (dokumentiert)"],["5.3","Rollen, Verantwortlichkeiten und Befugnisse","Rollenbeschreibung, Organigramm"],
+["6.1.1","Maßnahmen zum Umgang mit Risiken und Chancen","Methodik"],["6.1.2","Informationssicherheitsrisikobeurteilung","Risikomethodik (dokumentiert)"],["6.1.3","Informationssicherheitsrisikobehandlung","SoA, Risikobehandlungsplan"],["6.2","Informationssicherheitsziele","Ziele und Planung (dokumentiert)"],["6.3","Planung von Änderungen","Änderungsverfahren"],
+["7.1","Ressourcen","Ressourcenplanung"],["7.2","Kompetenz","Kompetenznachweise (dokumentiert)"],["7.3","Bewusstsein","Awareness-Nachweise"],["7.4","Kommunikation","Kommunikationsplan"],["7.5","Dokumentierte Information","Dokumentenlenkung, Register"],
+["8.1","Betriebliche Planung und Steuerung","Betriebsnachweise"],["8.2","Informationssicherheitsrisikobeurteilung","Ergebnisse (dokumentiert)"],["8.3","Informationssicherheitsrisikobehandlung","Ergebnisse (dokumentiert)"],
+["9.1","Überwachung, Messung, Analyse und Bewertung","KPI-Register, Messergebnisse"],["9.2","Internes Audit","Auditprogramm, Auditberichte"],["9.3","Managementbewertung","Protokoll Management Review"],
+["10.1","Fortlaufende Verbesserung","Verbesserungsmaßnahmen"],["10.2","Nichtkonformität und Korrekturmaßnahmen","Korrekturmaßnahmen (dokumentiert)"]
+];
+const IMPL=["offen","geplant","in Umsetzung","umgesetzt","wirksam geprüft"];
+const IMPL_SCORE={"offen":0,"geplant":.15,"in Umsetzung":.5,"umgesetzt":.85,"wirksam geprüft":1};
+const DOC_STATUS=["Entwurf","Zur Freigabe","gültig","zurückgezogen"];
+const TREAT=["mindern","vermeiden","übertragen","akzeptieren"];
+const FINDING_TYPES=["Hauptabweichung","Nebenabweichung","Verbesserungspotenzial","Hinweis"];
+const AUDIT_TYPES=["Stage 1","Stage 2 (Zertifizierung)","Überwachungsaudit 1","Überwachungsaudit 2","Rezertifizierung","Internes Audit"];
+const AUDIT_STATUS=["geplant","durchgeführt","Bericht offen","abgeschlossen"];
+const TASK_STATUS=["offen","in Arbeit","erledigt","verifiziert"];
+
+/* ======================= Hilfsfunktionen ======================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid=()=>Math.random().toString(36).slice(2,10);
+const today=()=>new Date().toISOString().slice(0,10);
+const addMonths=(d,m)=>{if(!d)return"";const x=new Date(d+"T00:00:00");x.setMonth(x.getMonth()+m);return x.toISOString().slice(0,10)};
+const daysUntil=d=>d?Math.round((new Date(d+"T00:00:00")-new Date(today()+"T00:00:00"))/864e5):null;
+const fmt=d=>d?d.split("-").reverse().join("."):"–";
+const pct=x=>Math.round(x*100)+" %";
+function toast(t){const e=document.createElement("div");e.className="toast";e.textContent=t;document.body.appendChild(e);setTimeout(()=>e.remove(),2600)}
+const ctrlSort=(a,b)=>{const pa=a.split(".").map(Number),pb=b.split(".").map(Number);return pa[0]-pb[0]||pa[1]-pb[1]||(pa[2]||0)-(pb[2]||0)};
+
+/* ======================= Datenhaltung ======================= */
+const KEY="dcc-isms-cockpit-v1";
+let DB=null, MEM_ONLY=false;
+function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){MEM_ONLY=true}return null}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){MEM_ONLY=true}}
+function T(){return DB.tenants.find(t=>t.id===DB.current)||DB.tenants[0]}
+function blankTenant(name){
+  const controls={};CONTROLS.forEach(([id])=>controls[id]={app:true,just:"",status:"offen",owner:"",note:""});
+  const clauses={};CLAUSES.forEach(([id])=>clauses[id]={status:"offen",docs:""});
+  return {id:uid(),name,legal:name,scope:"",site:"",cb:"",auditor:"",certNo:"",certFrom:"",certTo:"",stage2:"",isb:"",controls,clauses,docs:[],risks:[],evidence:[],audits:[],findings:[],tasks:[],created:today()};
+}
+
+/* ======================= Demo-Mandant (fiktiv) ======================= */
+function demoTenant(){
+  const t=blankTenant("Muster GmbH (Demo)");
+  Object.assign(t,{legal:"Muster GmbH",scope:"Entwicklung, Betrieb und Support der SaaS-Plattform „MusterCloud“ einschließlich der unterstützenden Prozesse IT-Betrieb, Kundensupport und Lieferantenmanagement am Standort Musterstadt.",site:"Musterweg 1, 12345 Musterstadt",cb:"Zertifizierungsstelle (Beispiel)",auditor:"Max Prüfer",certNo:"DEMO-27001-0001",certFrom:addMonths(today(),-2),certTo:addMonths(today(),34),stage2:addMonths(today(),-3),isb:"Erika Mustermann (extern, D-Cyber Compliance)"});
+  const pick=(ids,st)=>ids.forEach(i=>t.controls[i].status=st);
+  CONTROLS.forEach(([id])=>t.controls[id].status="umgesetzt");
+  pick(["5.1","5.2","5.9","5.12","5.15","5.24","6.3","8.13","8.24"],"wirksam geprüft");
+  pick(["5.7","8.11","8.12","8.16"],"in Umsetzung");pick(["5.30","8.23"],"geplant");
+  ["7.4","7.11","7.12","8.30"].forEach(i=>{t.controls[i].app=false;t.controls[i].status="offen"});
+  t.controls["7.4"].just="Keine eigenen Rechenzentrumsflächen; physische Überwachung über Cloud-Anbieter (siehe 5.23).";
+  t.controls["7.11"].just="Versorgungseinrichtungen werden durch Vermieter und Cloud-Anbieter verantwortet.";
+  t.controls["7.12"].just="Keine eigene Verkabelungsinfrastruktur im Geltungsbereich.";
+  t.controls["8.30"].just="Keine ausgelagerte Softwareentwicklung.";
+  Object.entries(t.controls).forEach(([id,c])=>{if(c.app&&!c.just)c.just="Risikobehandlung und Kundenanforderungen";c.owner={"5":"ISB","6":"HR","7":"Office Management","8":"CTO"}[id.split(".")[0]]});
+  Object.values(t.clauses).forEach(c=>c.status="umgesetzt");t.clauses["10.1"].status="in Umsetzung";
+  const D=(id,title,ver,status,owner,rev,ctrls)=>({id,title,version:ver,status,owner,approved:addMonths(today(),-4),next:rev,url:"",controls:ctrls,_k:uid()});
+  t.docs=[
+    D("D001","ISMS-Handbuch","1.0","gültig","ISB",addMonths(today(),8),"4.1, 4.3, 4.4"),
+    D("D002","Sicherheitsrichtlinien-Kompendium","1.0","gültig","ISB",addMonths(today(),8),"5.1"),
+    D("D003","Statement of Applicability","1.1","gültig","ISB",addMonths(today(),5),"6.1.3"),
+    D("D004","Richtlinie Klassifizierung","1.0","gültig","ISB",addMonths(today(),-1),"5.12, 5.13"),
+    D("D005","Risikoregister und Behandlungsplan","0.6","Zur Freigabe","ISB",addMonths(today(),2),"6.1.2, 8.2"),
+    D("D008","Dokumentenlenkungsverfahren","1.0","gültig","ISB",addMonths(today(),9),"7.5"),
+    D("D010","Protokoll Managementbewertung","1.0","gültig","GF",addMonths(today(),10),"9.3"),
+    D("D020","Zugangssteuerungskonzept","1.0","gültig","CTO",addMonths(today(),7),"5.15, 5.18, 8.2"),
+    D("D021","Richtlinie sichere Entwicklung","1.0","gültig","CTO",addMonths(today(),6),"8.25, 8.28"),
+    D("D025","Lieferanten- und Cloud-Sicherheitsrichtlinie","1.0","gültig","ISB",addMonths(today(),4),"5.19, 5.23"),
+    D("D026","Vorfallmanagement-Richtlinie","1.0","gültig","ISB",addMonths(today(),3),"5.24, 5.26"),
+    D("D026","Playbook Datenschutzverletzungen","0.2","Entwurf","DSB",addMonths(today(),1),"5.34")
+  ];
+  const R=(id,title,asset,p,i,treat,ctrls,rp,ri,owner,status)=>({id,title,asset,p,i,treat,controls:ctrls,rp,ri,owner,status,_k:uid()});
+  t.risks=[
+    R("R01","Kompromittierung privilegierter Cloud-Konten","Cloud-Plattform",3,5,"mindern","5.17, 8.2, 8.5",1,5,"CTO","behandelt"),
+    R("R02","Ransomware auf Endgeräten","Notebooks",3,4,"mindern","8.1, 8.7, 8.13",2,3,"IT","behandelt"),
+    R("R03","Ausfall des Hosting-Anbieters","Produktivumgebung",2,5,"mindern","5.30, 8.14",2,4,"CTO","in Behandlung"),
+    R("R04","Datenabfluss über KI-Prompts","Kundendaten",3,4,"mindern","8.12, 5.34",2,3,"ISB","in Behandlung"),
+    R("R05","Unvollständiges Offboarding","Benutzerkonten",2,3,"mindern","6.5, 5.18",1,2,"HR","behandelt"),
+    R("R06","Schwachstellen in Drittbibliotheken","Quellcode",4,3,"mindern","8.8, 8.28",2,2,"CTO","behandelt"),
+    R("R07","Fehlende Physische Zutrittskontrolle Büro","Büro",2,2,"akzeptieren","7.2",2,2,"GF","akzeptiert")
+  ];
+  const E=(control,title,date,valid,doc)=>({control,title,date,expires:valid,ref:doc,_k:uid()});
+  t.evidence=[
+    E("6.3","Awareness-Schulung alle Mitarbeitenden (Teilnehmerliste)",addMonths(today(),-5),addMonths(today(),7),"Schulungsnachweis"),
+    E("8.13","Wiederherstellungstest Datenbank",addMonths(today(),-7),addMonths(today(),-1),"Testprotokoll"),
+    E("5.18","Rezertifizierung Zugriffsrechte Q3",addMonths(today(),-2),addMonths(today(),1),"Export IAM"),
+    E("8.8","Pentest Webanwendung",addMonths(today(),-6),addMonths(today(),6),"Pentest-Bericht"),
+    E("9.3","Managementbewertung",addMonths(today(),-3),addMonths(today(),9),"D010")
+  ];
+  t.audits=[
+    {_k:uid(),type:"Stage 1",date:addMonths(today(),-5),lead:"Max Prüfer",days:"1",status:"abgeschlossen",note:"Dokumentenprüfung"},
+    {_k:uid(),type:"Internes Audit",date:addMonths(today(),-4),lead:"D-Cyber Compliance",days:"2",status:"abgeschlossen",note:"Alle Normkapitel und 93 Controls in Stichprobe"},
+    {_k:uid(),type:"Stage 2 (Zertifizierung)",date:addMonths(today(),-3),lead:"Max Prüfer",days:"3",status:"abgeschlossen",note:"Zertifikatsempfehlung erteilt"}
+  ];
+  t.findings=[
+    {_k:uid(),id:"F01",audit:"Stage 2 (Zertifizierung)",type:"Nebenabweichung",ref:"7.5",desc:"Dokumentnummer doppelt vergeben (D026).",action:"Register bereinigen, Nummernkreis prüfen",owner:"ISB",due:addMonths(today(),-1),status:"in Arbeit"},
+    {_k:uid(),id:"F02",audit:"Stage 2 (Zertifizierung)",type:"Verbesserungspotenzial",ref:"8.13",desc:"Wiederherstellungstests nicht im Jahresplan terminiert.",action:"Testplan quartalsweise ergänzen",owner:"CTO",due:addMonths(today(),2),status:"offen"},
+    {_k:uid(),id:"F03",audit:"Internes Audit",type:"Nebenabweichung",ref:"6.1.2",desc:"Risikokriterien nicht freigegeben.",action:"Freigabe durch GF",owner:"GF",due:addMonths(today(),-3),status:"verifiziert"}
+  ];
+  t.tasks=[];
+  return t;
+}
+
+/* ======================= Kennzahlen ======================= */
+function stats(t){
+  const ctrl=Object.entries(t.controls), app=ctrl.filter(([,c])=>c.app);
+  const score=app.reduce((s,[,c])=>s+(IMPL_SCORE[c.status]||0),0)/(app.length||1);
+  const missingJust=ctrl.filter(([,c])=>!c.just).length;
+  const docs=t.docs, dupIds=[...new Set(docs.map(d=>d.id).filter((x,i,a)=>x&&a.indexOf(x)!==i))];
+  const docDue=docs.filter(d=>d.status!=="zurückgezogen"&&d.next&&daysUntil(d.next)<0);
+  const docDraft=docs.filter(d=>d.status==="Entwurf"||d.status==="Zur Freigabe");
+  const openF=t.findings.filter(f=>f.status==="offen"||f.status==="in Arbeit");
+  const overdueF=openF.filter(f=>f.due&&daysUntil(f.due)<0);
+  const evExp=t.evidence.filter(e=>e.expires&&daysUntil(e.expires)<0);
+  const evSoon=t.evidence.filter(e=>e.expires&&daysUntil(e.expires)>=0&&daysUntil(e.expires)<=30);
+  const appIds=app.map(([id])=>id);
+  const covered=new Set(t.evidence.map(e=>e.control));
+  t.docs.forEach(d=>String(d.controls||"").split(/[,;\s]+/).forEach(c=>c&&covered.add(c)));
+  const noEvidence=appIds.filter(id=>!covered.has(id));
+  const highRisk=t.risks.filter(r=>r.rp*r.ri>=12);
+  return {score,app:app.length,excl:ctrl.length-app.length,missingJust,dupIds,docDue,docDraft,openF,overdueF,evExp,evSoon,noEvidence,highRisk};
+}
+function cycle(t){
+  // Zertifizierungszyklus nach ISO/IEC 17021-1: Überwachung jährlich, erste spätestens 12 Monate nach Zertifizierungsentscheidung
+  const base=t.certFrom||t.stage2; if(!base)return [];
+  const doneTypes=new Set(t.audits.filter(a=>a.status==="abgeschlossen"||a.status==="durchgeführt").map(a=>a.type));
+  const st=[
+    {k:"Stage 1",d:(t.audits.find(a=>a.type==="Stage 1")||{}).date||""},
+    {k:"Stage 2 (Zertifizierung)",d:t.stage2||base},
+    {k:"Überwachungsaudit 1",d:addMonths(base,12)},
+    {k:"Überwachungsaudit 2",d:addMonths(base,24)},
+    {k:"Rezertifizierung",d:t.certTo?addMonths(t.certTo,-3):addMonths(base,33)}
+  ];
+  let nextSet=false;
+  return st.map(s=>{const done=doneTypes.has(s.k);let next=false;if(!done&&!nextSet){next=true;nextSet=true}return {...s,done,next}});
+}
+
+/* ======================= Navigation ======================= */
+const VIEWS=[
+ ["dashboard","▦","Dashboard"],["mandant","◧","Mandant und Scope"],["kapitel","§","Normkapitel 4 bis 10"],["soa","✓","SoA und Controls"],
+ ["dokumente","▤","Dokumentenlenkung"],["risiken","◆","Risiken"],["nachweise","⎘","Nachweise"],["audits","⚑","Audits und Findings"]
+];
+function route(){return (location.hash||"#dashboard").slice(1)}
+function renderNav(){$("#nav").innerHTML=VIEWS.map(([k,ic,l])=>`<a href="#${k}" class="${route()===k?"on":""}"><span class="ic">${ic}</span>${l}</a>`).join("")}
+function renderTenantSel(){$("#tenantSel").innerHTML=DB.tenants.map(t=>`<option value="${t.id}" ${t.id===DB.current?"selected":""}>${esc(t.name)}</option>`).join("")}
+function render(){
+  renderNav();renderTenantSel();
+  const r=route(), v=VIEWS.find(x=>x[0]===r)||VIEWS[0];
+  $("#title").textContent=v[2];
+  const fn={dashboard:vDashboard,mandant:vMandant,kapitel:vKapitel,soa:vSoA,dokumente:vDocs,risiken:vRisks,nachweise:vEvidence,audits:vAudits}[v[0]];
+  $("#view").innerHTML=banner()+fn(T());
+  bindView(v[0]);
+}
+function banner(){
+  const b=MEM_ONLY?`<div class="banner warn">■ Der Browser erlaubt keine lokale Speicherung. Änderungen gehen beim Schließen verloren: bitte vorher exportieren.</div>`:"";
+  return b+`<div class="banner">■ Alle Daten bleiben ausschließlich in diesem Browser. Für die Ablage beim Mandanten (z. B. SharePoint) „Export (verschlüsselt)“ nutzen. Keine Mandantendaten in das Git-Repository einchecken.</div>`;
+}
+
+/* ======================= Views ======================= */
+function vDashboard(t){
+  const s=stats(t), cy=cycle(t), next=cy.find(c=>c.next), dn=next?daysUntil(next.d):null;
+  const byTheme=Object.keys(THEMES).map(th=>{const a=CONTROLS.filter(([id])=>id.startsWith(th+".")&&t.controls[id].app);const sc=a.reduce((x,[id])=>x+IMPL_SCORE[t.controls[id].status],0)/(a.length||1);return [th,THEMES[th],sc,a.length]});
+  const heat=[];for(let p=5;p>=1;p--){heat.push(`<div class="lab">${p}</div>`);for(let i=1;i<=5;i++){const n=t.risks.filter(r=>+r.rp===p&&+r.ri===i).length;const v=p*i;const bg=v>=15?"#F6CDD3":v>=8?"#FCE3BC":"#D6EEE2";heat.push(`<div style="background:${bg};color:${v>=15?"#8A1526":"#1D2F54"}">${n||""}</div>`)}}
+  heat.push(`<div class="lab"></div>`);for(let i=1;i<=5;i++)heat.push(`<div class="lab">${i}</div>`);
+  const todo=[
+    ...s.overdueF.map(f=>`Finding ${esc(f.id)} (${esc(f.type)}) überfällig seit ${fmt(f.due)}: ${esc(f.desc)}`),
+    ...s.docDue.map(d=>`${esc(d.id)} ${esc(d.title)}: Überprüfung fällig seit ${fmt(d.next)}`),
+    ...s.dupIds.map(id=>`Dokumentnummer ${esc(id)} mehrfach vergeben (Kap. 7.5)`),
+    ...s.evExp.map(e=>`Nachweis zu ${esc(e.control)} abgelaufen: ${esc(e.title)}`),
+    ...s.docDraft.map(d=>`${esc(d.id)} ${esc(d.title)} noch nicht freigegeben (${esc(d.status)})`)
+  ];
+  return `
+  <div class="grid g4">
+    <div class="card kpi"><div class="eyebrow">Umsetzungsgrad SoA</div><div class="v">${pct(s.score)}</div><div class="s">${s.app} anwendbar · ${s.excl} ausgeschlossen</div><div class="bar"><i style="width:${s.score*100}%"></i></div></div>
+    <div class="card kpi"><div class="eyebrow">Nächstes Audit</div><div class="v">${next?(dn>=0?dn+" Tage":"überfällig"):"–"}</div><div class="s">${next?esc(next.k)+" · "+fmt(next.d):"Zertifizierungsdaten pflegen"}</div></div>
+    <div class="card kpi"><div class="eyebrow">Offene Findings</div><div class="v">${s.openF.length}</div><div class="s">${s.overdueF.length} überfällig</div></div>
+    <div class="card kpi"><div class="eyebrow">Controls ohne Nachweis</div><div class="v">${s.noEvidence.length}</div><div class="s">ohne Dokument- oder Nachweisbezug</div></div>
+  </div>
+  <div class="card"><h2>Zertifizierungszyklus <small>${esc(t.cb||"Zertifizierungsstelle offen")} · Zertifikat ${esc(t.certNo||"–")} · gültig bis ${fmt(t.certTo)}</small></h2>
+    <div class="tl">${cy.map(c=>`<div class="st ${c.done?"done":""} ${c.next?"next":""}"><b>${esc(c.k)}</b><span class="muted">${fmt(c.d)}</span></div>`).join("")||'<div class="muted">Bitte unter „Mandant und Scope“ Stage-2-Datum oder Zertifikatsdaten eintragen.</div>'}</div>
+  </div>
+  <div class="grid g3">
+    <div class="card"><h2>Umsetzung nach Themen</h2>${byTheme.map(([k,l,sc,n])=>`<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between"><span>A.${k} ${l}</span><b>${pct(sc)}</b></div><div class="bar"><i style="width:${sc*100}%"></i></div><div class="s muted" style="font-size:11px">${n} anwendbare Controls</div></div>`).join("")}</div>
+    <div class="card"><h2>Risikomatrix <small>Restrisiko · Wahrscheinlichkeit × Auswirkung</small></h2><div class="heat">${heat.join("")}</div><p class="muted" style="font-size:12px;margin:10px 0 0">${s.highRisk.length} Risiken mit Restrisiko ≥ 12</p></div>
+    <div class="card"><h2>Handlungsbedarf <small>${todo.length}</small></h2>${todo.length?`<ul class="sq">${todo.slice(0,9).map(x=>`<li>${x}</li>`).join("")}</ul>${todo.length>9?`<p class="muted">… und ${todo.length-9} weitere</p>`:""}`:'<div class="empty">Kein offener Handlungsbedarf</div>'}</div>
+  </div>`;
+}
+function field(k,l,v,type="text",opts,full){
+  let inp;
+  if(type==="select")inp=`<select data-k="${k}">${opts.map(o=>`<option ${o==v?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
+  else if(type==="textarea")inp=`<textarea data-k="${k}">${esc(v)}</textarea>`;
+  else inp=`<input type="${type}" data-k="${k}" value="${esc(v)}">`;
+  return `<label class="${full?"full":""}">${l}${inp}</label>`;
+}
+function vMandant(t){
+  return `<div class="card"><h2>Stammdaten und Geltungsbereich <small>Kap. 4.3</small></h2>
+  <div class="modal" style="box-shadow:none;max-width:none;max-height:none"><div class="body" id="tform" style="padding:0">
+    ${field("name","Anzeigename",t.name)}${field("legal","Firmierung",t.legal)}
+    ${field("scope","Geltungsbereich (wie im Zertifikat)",t.scope,"textarea",null,true)}
+    ${field("site","Standort(e)",t.site,"text",null,true)}
+    ${field("isb","Informationssicherheitsbeauftragte/r",t.isb)}${field("cb","Zertifizierungsstelle",t.cb)}
+    ${field("auditor","Leitende/r Auditor/in",t.auditor)}${field("certNo","Zertifikatsnummer",t.certNo)}
+    ${field("stage2","Datum Stage-2-Audit",t.stage2,"date")}${field("certFrom","Zertifikat gültig ab",t.certFrom,"date")}
+    ${field("certTo","Zertifikat gültig bis",t.certTo,"date")}
+  </div></div>
+  <div class="toolbar" style="margin-top:16px"><button class="btn pri" id="saveT">Speichern</button><span class="grow"></span><button class="btn del" id="delT">Mandant löschen</button></div></div>`;
+}
+function vKapitel(t){
+  return `<div class="toolbar"><span class="muted">Anforderungen der Normkapitel 4 bis 10 mit erforderlicher dokumentierter Information</span><span class="grow"></span><button class="btn" onclick="window.print()">Drucken</button></div>
+  <div class="wrap"><table class="tbl"><thead><tr><th>Kap.</th><th>Anforderung</th><th>Erwartete Nachweise</th><th>Status</th><th>Dokumente</th></tr></thead><tbody>
+  ${CLAUSES.map(([id,l,n])=>{const c=t.clauses[id]||{status:"offen",docs:""};return `<tr><td class="id">${id}</td><td>${l}</td><td class="muted">${n}</td><td><select data-cl="${id}" data-f="status">${IMPL.map(o=>`<option ${o===c.status?"selected":""}>${o}</option>`).join("")}</select></td><td><input data-cl="${id}" data-f="docs" value="${esc(c.docs)}" placeholder="z. B. D001"></td></tr>`}).join("")}
+  </tbody></table></div>`;
+}
+let soaFilter={q:"",th:"",st:""};
+function vSoA(t){
+  const rows=[];let cur="";
+  CONTROLS.forEach(([id,l])=>{
+    const c=t.controls[id], th=id.split(".")[0];
+    if(soaFilter.th&&soaFilter.th!==th)return;
+    if(soaFilter.st==="__excl"&&c.app)return;
+    if(soaFilter.st&&soaFilter.st!=="__excl"&&(c.status!==soaFilter.st||!c.app))return;
+    if(soaFilter.q&&!(id+" "+l+" "+c.just+" "+c.owner).toLowerCase().includes(soaFilter.q.toLowerCase()))return;
+    if(th!==cur){cur=th;rows.push(`<tr class="grp"><td colspan="6">A.${th} ${THEMES[th]}</td></tr>`)}
+    rows.push(`<tr><td class="id">A.${id}</td><td>${l}</td>
+      <td><select data-c="${id}" data-f="app"><option value="1" ${c.app?"selected":""}>ja</option><option value="0" ${!c.app?"selected":""}>nein</option></select></td>
+      <td><select data-c="${id}" data-f="status" ${c.app?"":"disabled"}>${IMPL.map(o=>`<option ${o===c.status?"selected":""}>${o}</option>`).join("")}</select></td>
+      <td><input data-c="${id}" data-f="owner" value="${esc(c.owner)}" placeholder="Verantwortlich"></td>
+      <td><input data-c="${id}" data-f="just" value="${esc(c.just)}" placeholder="${c.app?"Grund der Aufnahme":"Begründung Ausschluss (Pflicht)"}" style="${!c.app&&!c.just?"border-color:var(--bad)":""}"></td></tr>`);
+  });
+  const s=stats(t);
+  return `<div class="toolbar"><input type="search" id="soaQ" placeholder="Suche Control, Text, Owner" value="${esc(soaFilter.q)}">
+   <select id="soaTh" style="width:auto"><option value="">Alle Themen</option>${Object.entries(THEMES).map(([k,v])=>`<option value="${k}" ${soaFilter.th===k?"selected":""}>A.${k} ${v}</option>`).join("")}</select>
+   <select id="soaSt" style="width:auto"><option value="">Alle Status</option>${IMPL.map(o=>`<option ${soaFilter.st===o?"selected":""}>${o}</option>`).join("")}<option value="__excl" ${soaFilter.st==="__excl"?"selected":""}>ausgeschlossen</option></select>
+   <span class="grow"></span><span class="muted">${s.missingJust?`<span class="pill bad">${s.missingJust} ohne Begründung</span>`:'<span class="pill ok">alle begründet</span>'}</span>
+   <button class="btn" id="soaCsv">SoA als CSV</button><button class="btn" onclick="window.print()">Drucken</button></div>
+  <div class="wrap"><table class="tbl"><thead><tr><th>Control</th><th>Titel</th><th>Anwendbar</th><th>Umsetzung</th><th>Owner</th><th>Begründung (Kap. 6.1.3 d)</th></tr></thead><tbody>${rows.join("")||'<tr><td colspan="6" class="empty">Keine Treffer</td></tr>'}</tbody></table></div>`;
+}
+
+/* Generische Listenansicht */
+const SCHEMAS={
+  docs:{title:"Dokument",cols:[["id","Nr."],["title","Titel"],["version","Version"],["status","Status"],["owner","Owner"],["next","Nächste Prüfung"],["controls","Bezug"]],
+    fields:[["id","Dokumentnummer"],["title","Titel"],["version","Version"],["status","Status","select",DOC_STATUS],["owner","Owner"],["approved","Freigegeben am","date"],["next","Nächste Überprüfung","date"],["controls","Bezug Kapitel/Controls (Komma)"],["url","Link (z. B. SharePoint)","url",null,true]]},
+  risks:{title:"Risiko",cols:[["id","Nr."],["title","Risiko"],["asset","Wert"],["inh","Inhärent"],["treat","Behandlung"],["controls","Controls"],["res","Restrisiko"],["owner","Owner"],["status","Status"]],
+    fields:[["id","Nr."],["title","Risikobeschreibung","text",null,true],["asset","Betroffener Wert"],["owner","Risikoeigner"],["p","Wahrscheinlichkeit (1 bis 5)","number"],["i","Auswirkung (1 bis 5)","number"],["treat","Behandlungsoption","select",TREAT],["controls","Controls (Komma)"],["rp","Rest-Wahrscheinlichkeit","number"],["ri","Rest-Auswirkung","number"],["status","Status","select",["offen","in Behandlung","behandelt","akzeptiert"]]]},
+  evidence:{title:"Nachweis",cols:[["control","Control/Kap."],["title","Nachweis"],["date","Datum"],["expires","Gültig bis"],["ref","Ablage/Referenz"]],
+    fields:[["control","Control oder Kapitel"],["title","Beschreibung","text",null,true],["date","Erstellt am","date"],["expires","Gültig bis / Wiederholung","date"],["ref","Ablage oder Referenz","text",null,true]]},
+  audits:{title:"Audit",cols:[["type","Art"],["date","Datum"],["lead","Auditleitung"],["days","Audittage"],["status","Status"],["note","Bemerkung"]],
+    fields:[["type","Auditart","select",AUDIT_TYPES],["date","Datum","date"],["lead","Auditleitung"],["days","Audittage","number"],["status","Status","select",AUDIT_STATUS],["note","Bemerkung","textarea",null,true]]},
+  findings:{title:"Finding",cols:[["id","Nr."],["type","Art"],["ref","Bezug"],["desc","Feststellung"],["action","Korrekturmaßnahme"],["owner","Owner"],["due","Frist"],["status","Status"]],
+    fields:[["id","Nr."],["audit","Audit","select",AUDIT_TYPES],["type","Art","select",FINDING_TYPES],["ref","Bezug (Kapitel/Control)"],["desc","Feststellung","textarea",null,true],["action","Korrekturmaßnahme und Ursachenanalyse","textarea",null,true],["owner","Verantwortlich"],["due","Frist","date"],["status","Status","select",TASK_STATUS]]}
+};
+function cell(kind,k,r){
+  const v=r[k];
+  if(kind==="docs"&&k==="status")return `<span class="pill ${v==="gültig"?"ok":v==="zurückgezogen"?"mute":"warn"}">${esc(v)}</span>`;
+  if(kind==="docs"&&k==="title")return r.url?`<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(v)}</a>`:esc(v);
+  if(kind==="docs"&&k==="id"){const dup=T().docs.filter(d=>d.id===v).length>1;return esc(v)+(dup?` <span class="pill bad" title="Nummer mehrfach vergeben">doppelt</span>`:"")}
+  if(kind==="risks"&&(k==="inh"||k==="res")){const n=k==="inh"?r.p*r.i:r.rp*r.ri;return `<span class="pill ${n>=15?"bad":n>=8?"warn":"ok"}">${n}</span>`}
+  if((k==="next"||k==="expires"||k==="due")&&v){const d=daysUntil(v);const done=r.status==="erledigt"||r.status==="verifiziert";return `<span class="${!done&&d<0?"pill bad":!done&&d<=30?"pill warn":""}">${fmt(v)}</span>`}
+  if(k==="date"||k==="approved")return fmt(v);
+  if(kind==="findings"&&k==="type")return `<span class="pill ${v==="Hauptabweichung"?"bad":v==="Nebenabweichung"?"warn":"mute"}">${esc(v)}</span>`;
+  if(k==="status")return `<span class="pill ${/erledigt|verifiziert|abgeschlossen|behandelt|akzeptiert/.test(v)?"ok":/offen|Bericht/.test(v)?"warn":""}">${esc(v)}</span>`;
+  return esc(v);
+}
+function listView(t,kind,extra=""){
+  const S=SCHEMAS[kind], rows=t[kind];
+  return `<div class="toolbar">${extra}<span class="grow"></span><button class="btn pri" data-add="${kind}">+ ${S.title}</button></div>
+  <div class="wrap"><table class="tbl"><thead><tr>${S.cols.map(c=>`<th>${c[1]}</th>`).join("")}<th></th></tr></thead><tbody>
+  ${rows.length?rows.map(r=>`<tr>${S.cols.map(([k])=>`<td class="${k==="id"?"id":""}">${cell(kind,k,r)}</td>`).join("")}<td style="white-space:nowrap"><button class="btn sm" data-edit="${kind}" data-key="${r._k}">Bearbeiten</button></td></tr>`).join(""):`<tr><td colspan="${S.cols.length+1}" class="empty">Noch keine Einträge</td></tr>`}
+  </tbody></table></div>`;
+}
+function vDocs(t){const s=stats(t);return listView(t,"docs",`<span class="muted">${t.docs.length} Dokumente · ${t.docs.filter(d=>d.status==="gültig").length} gültig</span>${s.dupIds.length?` <span class="pill bad">Doppelte Nummern: ${s.dupIds.map(esc).join(", ")}</span>`:""}${s.docDue.length?` <span class="pill warn">${s.docDue.length} Überprüfungen fällig</span>`:""}`)}
+function vRisks(t){return listView(t,"risks",`<span class="muted">Bewertung 1 bis 5 · Risikowert = Wahrscheinlichkeit × Auswirkung · Kap. 6.1.2 / 8.2</span>`)}
+function vEvidence(t){const s=stats(t);return listView(t,"evidence",`<span class="muted">${t.evidence.length} Nachweise</span>${s.evExp.length?` <span class="pill bad">${s.evExp.length} abgelaufen</span>`:""}${s.evSoon.length?` <span class="pill warn">${s.evSoon.length} laufen in 30 Tagen ab</span>`:""}`)+
+  `<div class="card"><h2>Anwendbare Controls ohne Dokument- oder Nachweisbezug <small>${s.noEvidence.length}</small></h2><div class="muted">${s.noEvidence.sort(ctrlSort).map(x=>"A."+x).join(" · ")||"Alle abgedeckt"}</div></div>`}
+function vAudits(t){
+  return `<div class="card"><h2>Audits <small>Stage 1, Stage 2, Überwachung, Rezertifizierung, interne Audits</small></h2>${listView(t,"audits")}</div>
+  <div class="card"><h2>Findings und Korrekturmaßnahmen <small>Kap. 10.2</small></h2>${listView(t,"findings",`<span class="muted">Hauptabweichungen müssen vor der Zertifizierungsentscheidung nachweislich behoben sein</span>`)}</div>`;
+}
+
+/* ======================= Modal ======================= */
+function openForm(kind,key){
+  const t=T(), S=SCHEMAS[kind], rec=key?t[kind].find(r=>r._k===key):{};
+  const ov=document.createElement("div");ov.className="ov";
+  ov.innerHTML=`<div class="modal" role="dialog" aria-modal="true"><header>${key?"":"Neu: "}${S.title}</header><div class="body">
+   ${S.fields.map(([k,l,type,opts,full])=>field(k,l,rec[k]??(type==="select"?opts[0]:""),type||"text",opts,full||type==="textarea")).join("")}
+   </div><footer>${key?`<button class="btn del" data-x="del">Löschen</button><span style="flex:1"></span>`:""}<button class="btn" data-x="cancel">Abbrechen</button><button class="btn pri" data-x="ok">Speichern</button></footer></div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener("click",e=>{
+    const x=e.target.dataset.x; if(e.target===ov||x==="cancel")return ov.remove();
+    if(x==="del"){if(confirm(`${S.title} wirklich löschen?`)){t[kind]=t[kind].filter(r=>r._k!==key);save();ov.remove();render()}return}
+    if(x==="ok"){const o=key?rec:{_k:uid()};ov.querySelectorAll("[data-k]").forEach(i=>{let v=i.value;if(i.type==="number")v=v===""?"":(kind==="risks"?Math.max(1,Math.min(5,+v||1)):Math.max(0,+v||0));o[i.dataset.k]=v});if(!key)t[kind].push(o);
+      if(kind==="docs")t.docs.sort((a,b)=>String(a.id).localeCompare(String(b.id),"de",{numeric:true}));
+      save();ov.remove();render();toast("Gespeichert")}
+  });
+  ov.querySelector("input,select,textarea")?.focus();
+}
+
+/* ======================= Bindings ======================= */
+function bindView(k){
+  const t=T(), V=$("#view");
+  V.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>openForm(b.dataset.add));
+  V.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>openForm(b.dataset.edit,b.dataset.key));
+  if(k==="soa"){
+    V.querySelectorAll("[data-c]").forEach(i=>i.onchange=()=>{const c=t.controls[i.dataset.c];let v=i.value;if(i.dataset.f==="app")v=v==="1";c[i.dataset.f]=v;save();if(i.dataset.f==="app")render()});
+    $("#soaQ").oninput=e=>{soaFilter.q=e.target.value;const pos=e.target.selectionStart;render();const q=$("#soaQ");q.focus();q.setSelectionRange(pos,pos)};
+    $("#soaTh").onchange=e=>{soaFilter.th=e.target.value;render()};
+    $("#soaSt").onchange=e=>{soaFilter.st=e.target.value;render()};
+    $("#soaCsv").onclick=()=>{const q=s=>'"'+String(s??"").replace(/"/g,'""')+'"';const lines=[["Control","Titel","Anwendbar","Umsetzung","Owner","Begründung"].map(q).join(";")];CONTROLS.forEach(([id,l])=>{const c=t.controls[id];lines.push(["A."+id,l,c.app?"ja":"nein",c.app?c.status:"",c.owner,c.just].map(q).join(";"))});download("﻿"+lines.join("\r\n"),`SoA_${t.name.replace(/\W+/g,"_")}_${today()}.csv`,"text/csv")};
+  }
+  if(k==="kapitel")V.querySelectorAll("[data-cl]").forEach(i=>i.onchange=()=>{t.clauses[i.dataset.cl]=t.clauses[i.dataset.cl]||{};t.clauses[i.dataset.cl][i.dataset.f]=i.value;save()});
+  if(k==="mandant"){
+    $("#saveT").onclick=()=>{V.querySelectorAll("#tform [data-k]").forEach(i=>t[i.dataset.k]=i.value);save();render();toast("Mandant gespeichert")};
+    $("#delT").onclick=()=>{if(DB.tenants.length<2)return toast("Der letzte Mandant kann nicht gelöscht werden");if(confirm(`Mandant „${t.name}“ mit allen Daten aus diesem Browser löschen? Vorher exportieren.`)){DB.tenants=DB.tenants.filter(x=>x.id!==t.id);DB.current=DB.tenants[0].id;save();render()}};
+  }
+}
+function download(content,name,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+
+/* ======================= Verschlüsselter Export/Import (AES-GCM 256, PBKDF2-SHA-256) ======================= */
+const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u)));
+const ub64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function deriveKey(pw,salt){const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:310000,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+async function encrypt(obj,pw){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));const key=await deriveKey(pw,salt);const ct=await crypto.subtle.encrypt({name:"AES-GCM",iv},key,new TextEncoder().encode(JSON.stringify(obj)));return JSON.stringify({format:"dcc-isms",v:1,alg:"AES-GCM-256/PBKDF2-SHA256-310k",salt:b64(salt),iv:b64(iv),data:b64(ct)})}
+async function decrypt(o,pw){const key=await deriveKey(pw,ub64(o.salt));const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:ub64(o.iv)},key,ub64(o.data));return JSON.parse(new TextDecoder().decode(pt))}
+$("#btnExport").onclick=async()=>{
+  const t=T();const pw=prompt(`Passwort für den Export von „${t.name}“ (mind. 12 Zeichen). Ohne Passwort ist keine Wiederherstellung möglich.`);
+  if(!pw)return; if(pw.length<12)return toast("Passwort zu kurz (mind. 12 Zeichen)");
+  if(prompt("Passwort wiederholen")!==pw)return toast("Passwörter stimmen nicht überein");
+  download(await encrypt({kind:"tenant",tenant:t,exported:new Date().toISOString()},pw),`ISMS_${t.name.replace(/\W+/g,"_")}_${today()}.dcc`,"application/json");toast("Verschlüsselt exportiert");
+};
+$("#btnImport").onclick=()=>$("#fileIn").click();
+$("#fileIn").onchange=async e=>{
+  const f=e.target.files[0];e.target.value="";if(!f)return;
+  try{let o=JSON.parse(await f.text());
+    if(o.format==="dcc-isms"){const pw=prompt("Passwort der Exportdatei");if(!pw)return;o=await decrypt(o,pw)}
+    const t=o.tenant||o; if(!t.controls)throw new Error("Kein Mandant");
+    const ex=DB.tenants.findIndex(x=>x.id===t.id);
+    if(ex>=0){if(!confirm(`Mandant „${t.name}“ existiert bereits. Überschreiben?`))return;DB.tenants[ex]=t}else DB.tenants.push(t);
+    CONTROLS.forEach(([id])=>{if(!t.controls[id])t.controls[id]={app:true,just:"",status:"offen",owner:""}});
+    t.clauses=t.clauses||{};CLAUSES.forEach(([id])=>{if(!t.clauses[id])t.clauses[id]={status:"offen",docs:""}});
+    ["docs","risks","evidence","audits","findings"].forEach(k=>{t[k]=(t[k]||[]).map(r=>({_k:r._k||uid(),...r}))});
+    DB.current=t.id;save();render();toast("Import erfolgreich");
+  }catch(err){toast(err.name==="OperationError"?"Falsches Passwort oder beschädigte Datei":"Import fehlgeschlagen: "+err.message)}
+};
+$("#tenantSel").onchange=e=>{DB.current=e.target.value;save();render()};
+$("#newTenant").onclick=()=>{const n=prompt("Name des neuen Mandanten");if(!n)return;const t=blankTenant(n.trim());DB.tenants.push(t);DB.current=t.id;save();location.hash="#mandant";render()};
+window.addEventListener("hashchange",render);
+
+/* ======================= Start ======================= */
+DB=load();
+if(!DB||!DB.tenants||!DB.tenants.length){const d=demoTenant();DB={tenants:[d],current:d.id};save()}
+render();
+</script>
+</body>
+</html>
